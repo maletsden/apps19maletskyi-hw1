@@ -1,8 +1,10 @@
 package ua.edu.ucu.tempseries;
 
+import java.util.InputMismatchException;
+
 public class TemperatureSeriesAnalysis {
-    private double[] temperatures;
-    private int temps_len;
+    public double[] temperatures;
+    public int temps_len;
 
     public TemperatureSeriesAnalysis() {
         temperatures = new double[8];
@@ -10,6 +12,8 @@ public class TemperatureSeriesAnalysis {
     }
 
     public TemperatureSeriesAnalysis(double[] temperatureSeries) {
+        checkTempsValues(temperatureSeries);
+
         temperatures = new double[temperatureSeries.length * 2];
         temps_len = temperatureSeries.length;
 
@@ -72,15 +76,13 @@ public class TemperatureSeriesAnalysis {
         checkIsEmpty();
 
         double closest = temperatures[0];
-        double difference = Math.abs(tempValue - closest);
 
         for (int i = 1; i < temps_len; i++) {
-            if (Math.abs(tempValue - temperatures[i]) < difference) {
+            if (Math.abs(tempValue - temperatures[i]) <= Math.abs(tempValue - closest)) {
                 closest =
                         (Math.abs(closest) == Math.abs(temperatures[i]))
                                 ? Math.max(closest, temperatures[i])
                                 : temperatures[i];
-                difference = Math.abs(tempValue - closest);
             }
         }
 
@@ -90,9 +92,17 @@ public class TemperatureSeriesAnalysis {
     public double[] findTempsLessThen(double tempValue) {
         checkIsEmpty();
 
-        double[] smallerTemperatures = new double[temperatures.length];
-        int pos = 0;
+        int size = 0;
 
+        // count size
+        for (int i = 0; i < temps_len; i++) {
+            if (temperatures[i] < tempValue) {
+                size++;
+            }
+        }
+
+        double[] smallerTemperatures = new double[size];
+        int pos = 0;
         for (int i = 0; i < temps_len; i++) {
             if (temperatures[i] < tempValue) {
                 smallerTemperatures[pos++] = temperatures[i];
@@ -105,11 +115,21 @@ public class TemperatureSeriesAnalysis {
     public double[] findTempsGreaterThen(double tempValue) {
         checkIsEmpty();
 
-        double[] greaterTemperatures = new double[temps_len];
+        int size = 0;
+
+        // count size
+        for (int i = 0; i < temps_len; i++) {
+            if (temperatures[i] > tempValue) {
+                size++;
+            }
+        }
+
+        double[] greaterTemperatures = new double[size];
+
         int pos = 0;
 
         for (int i = 0; i < temps_len; i++) {
-            if (temperatures[i] < tempValue) {
+            if (temperatures[i] > tempValue) {
                 greaterTemperatures[pos++] = temperatures[i];
             }
         }
@@ -129,8 +149,10 @@ public class TemperatureSeriesAnalysis {
     }
 
     public int addTemps(double... temps) {
-        if (temperatures.length == temps_len) {
-            int newSize = Math.max(temperatures.length + temps.length, temperatures.length * 2);
+        checkTempsValues(temps);
+
+        if (temperatures.length < temps_len + temps.length) {
+            int newSize = Math.max(temps_len + temps.length, temperatures.length * 2);
 
             // allocate bigger array
             double[] newTemperatures = new double[newSize];
@@ -156,6 +178,14 @@ public class TemperatureSeriesAnalysis {
     private void checkIsEmpty() {
         if (temps_len == 0) {
             throw new IllegalArgumentException();
+        }
+    }
+
+    private void checkTempsValues(double[] temps) {
+        for (double temp: temps) {
+            if (temp < -273.0) {
+                throw new InputMismatchException();
+            }
         }
     }
 }
