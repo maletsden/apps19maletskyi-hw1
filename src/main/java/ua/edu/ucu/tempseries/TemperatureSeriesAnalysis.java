@@ -25,7 +25,7 @@ public class TemperatureSeriesAnalysis {
             sum += temperatures[i];
         }
 
-        return sum / temperatures.length;
+        return sum / temps_len;
     }
 
     public double deviation() {
@@ -37,7 +37,7 @@ public class TemperatureSeriesAnalysis {
             deviation += Math.pow(temperatures[i] - aversge_temp, 2);
         }
 
-        return Math.sqrt(deviation / temperatures.length);
+        return Math.sqrt(deviation / temps_len);
     }
 
     public double min() {
@@ -105,7 +105,7 @@ public class TemperatureSeriesAnalysis {
     public double[] findTempsGreaterThen(double tempValue) {
         checkIsEmpty();
 
-        double[] greaterTemperatures = new double[temperatures.length];
+        double[] greaterTemperatures = new double[temps_len];
         int pos = 0;
 
         for (int i = 0; i < temps_len; i++) {
