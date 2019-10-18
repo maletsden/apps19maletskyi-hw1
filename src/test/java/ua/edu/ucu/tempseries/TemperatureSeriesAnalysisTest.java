@@ -13,8 +13,8 @@ public class TemperatureSeriesAnalysisTest {
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis();
 
         // compare expected result with actual result
-        assertEquals(8, seriesAnalysis.temperatures.length);
-        assertEquals(0, seriesAnalysis.temps_len);
+        assertEquals(8, seriesAnalysis.getTemperatures().length);
+        assertEquals(0, seriesAnalysis.getTemps_len());
     }
 
     @Test
@@ -125,12 +125,20 @@ public class TemperatureSeriesAnalysisTest {
         double[] temperatureSeries = {1.0, 1.0, 1.0, 1.0};
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
 
-        assertEquals(1.0, seriesAnalysis.findTempClosestToValue(1.0), 0.00001);
+        assertEquals(
+                1.0,
+                seriesAnalysis.findTempClosestToValue(1.0),
+                0.00001
+        );
 
         double[] temperatureSeries1 = {5.0, -1.0, 3.0, 3.0};
         seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries1);
 
-        assertEquals(3.0, seriesAnalysis.findTempClosestToValue(4.0), 0.00001);
+        assertEquals(
+                3.0,
+                seriesAnalysis.findTempClosestToValue(4.0),
+                0.00001
+        );
 
         double[] temperatureSeries2 = {5.0, -2.0, 3.0, 2.0};
         seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries2);
@@ -204,30 +212,30 @@ public class TemperatureSeriesAnalysisTest {
         double[] temperatureSeries = {1.0, 2.0, 3.0, 4.0};
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
 
-        assertEquals(4, seriesAnalysis.temps_len);
-        assertEquals(8, seriesAnalysis.temperatures.length);
+        assertEquals(4, seriesAnalysis.getTemps_len());
+        assertEquals(8, seriesAnalysis.getTemperatures().length);
 
         assertEquals(5, seriesAnalysis.addTemps(5.0));
 
-        assertEquals(5, seriesAnalysis.temps_len);
-        assertEquals(8, seriesAnalysis.temperatures.length);
+        assertEquals(5, seriesAnalysis.getTemps_len());
+        assertEquals(8, seriesAnalysis.getTemperatures().length);
 
         assertEquals(9, seriesAnalysis.addTemps(6.0, 7.0, 8.0, 9.0));
 
-        assertEquals(9, seriesAnalysis.temps_len);
-        assertEquals(16, seriesAnalysis.temperatures.length);
+        assertEquals(9, seriesAnalysis.getTemps_len());
+        assertEquals(16, seriesAnalysis.getTemperatures().length);
 
 
         double[] temperatureSeries1 = {1.0};
         seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries1);
 
-        assertEquals(1, seriesAnalysis.temps_len);
-        assertEquals(2, seriesAnalysis.temperatures.length);
+        assertEquals(1, seriesAnalysis.getTemps_len());
+        assertEquals(2, seriesAnalysis.getTemperatures().length);
 
         assertEquals(5, seriesAnalysis.addTemps(2.0, 3.0, 4.0, 5.0));
 
-        assertEquals(5, seriesAnalysis.temps_len);
-        assertEquals(5, seriesAnalysis.temperatures.length);
+        assertEquals(5, seriesAnalysis.getTemps_len());
+        assertEquals(5, seriesAnalysis.getTemperatures().length);
     }
 
     @Test(expected = InputMismatchException.class)
